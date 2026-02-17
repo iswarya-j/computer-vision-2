@@ -1,0 +1,37 @@
+import cv2
+import matplotlib.pyplot as plt
+img = cv2.imread("nature.jpg")
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+plt.imshow(img)
+plt.title("Original Image - Level 0")
+plt.axis("off")
+level1 = cv2.pyrDown(img)
+
+plt.imshow(level1)
+plt.title("Pyramid Level 1")
+plt.axis("off")
+level2 = cv2.pyrDown(level1)
+level3 = cv2.pyrDown(level2)
+
+images = [img, level1, level2, level3]
+titles = ["Level 0", "Level 1", "Level 2", "Level 3"]
+
+plt.figure(figsize=(10,6))
+for i in range(4):
+    plt.subplot(2,2,i+1)
+    plt.imshow(images[i])
+    plt.title(titles[i])
+    plt.axis("off")
+plt.show()
+for i, im in enumerate(images):
+    print(f"Level {i} image size: {im.shape}")
+for i, im in enumerate(images):
+    gray = cv2.cvtColor(im, cv2.COLOR_RGB2GRAY)
+    edges = cv2.Canny(gray, 100, 200)
+    
+    plt.figure()
+    plt.imshow(edges, cmap='gray')
+    plt.title(f"Edges at Pyramid Level {i}")
+    plt.axis("off")
+    plt.show()
